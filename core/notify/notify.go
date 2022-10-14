@@ -49,7 +49,7 @@ func (h *Handler) AddCipherSuite(cipherSuite CipherSuite) *Handler {
 // AddRSAWithAESGCM 添加一个 RSA + AES-GCM 的算法套件
 func (h *Handler) AddRSAWithAESGCM(verifier auth.Verifier, aesgcm cipher.AEAD) *Handler {
 	v := CipherSuite{
-		signatureType: "WECHATPAY2-RSA2048-SHA256",
+		signatureType: "WECHATPAY2-SHA256-RSA2048",
 		validator:     *validators.NewWechatPayNotifyValidator(verifier),
 		aeadAlgorithm: "AEAD_AES_256_GCM",
 		aead:          aesgcm,
@@ -65,7 +65,7 @@ func (h *Handler) ParseNotifyRequest(
 ) (*Request, error) {
 	signType := request.Header.Get("Wechatpay-Signature-Type")
 	if signType == "" {
-		signType = "WECHATPAY2-RSA2048-SHA256"
+		signType = "WECHATPAY2-SHA256-RSA2048"
 	}
 
 	suite, ok := h.cipherSuites[signType]
